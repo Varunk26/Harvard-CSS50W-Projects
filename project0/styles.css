@@ -1,0 +1,49 @@
+.center {
+    margin: auto;
+    width: 60%;
+    border: 3px solid #73AD21;
+    padding: 10px;
+}
+
+#rcorners {
+    border-radius: 25px;
+    border: 2px solid #73AD21;
+    padding: 20px;
+
+}
+
+div>form {
+    margin: auto;
+    width: 60%;
+    border: 3px solid #2821ad;
+    padding: 10px;
+}
+
+.box {
+    width: 100%;
+    text-align: center;
+}
+
+.boxl {
+    width: 100%;
+    text-align: left;
+}
+
+.right {
+    float: right;
+  }
+
+  input[name^="as"] {
+    float: right;
+    clear: both;
+  }
+
+  #rcornersadv {
+   
+   
+    float: right;
+    clear: both;
+    background-color: blue;
+    color: #ffffff;
+
+}

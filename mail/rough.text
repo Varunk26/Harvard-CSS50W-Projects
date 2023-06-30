@@ -1,0 +1,49 @@
+// Show sent emails
+  if (mailbox === 'sent') {
+    fetch(`/emails/sent`)
+      .then(response => response.json)
+      .then(emails => {
+
+        console.log(emails);
+
+        emails.forEach(email => {
+
+          //create a div for each email
+          const div = document.createElement('div');
+          div.innerHTML = `${email.sender} - ${email.subject} - ${email.timestamp}`;
+          document.querySelector('#emails-view').append(div);
+        });
+
+      });
+  }
+
+
+
+One potential issue is that you're using the same class name, btn-dark, for both archive and unarchive buttons. When you use document.querySelectorAll('.btn-dark') to select the button, it will select all buttons with the class btn-dark, including both archive and unarchive buttons. Therefore, when you add the event listener, it's added to both buttons, and when you click either button, the same function archive_unarchive() will be called.
+
+To fix this, you can give each button a unique class or id, so that you can select and add the event listener to the correct button. For example:
+
+javascript
+Copy code
+if (mailbox !== 'sent') {
+  const archive_button = document.createElement('button');
+  if (mailbox === 'inbox') {
+    archive_button.textContent = 'Archive';
+    archive_button.id = 'archive-' + email.id; // add unique id for archive button
+  }
+  else if (mailbox === 'archive') {
+    archive_button.textContent = 'Unarchive';
+    archive_button.id = 'unarchive-' + email.id; // add unique id for unarchive button
+  }
+  archive_button.classList.add('btn-dark'); // add common class
+  document.querySelector('#openmail-view').append(archive_button);
+
+  console.log('loaded archive button');
+
+  // Add event listener to the archive/unarchive button
+  const archive_unarchive_button = document.querySelector(`#${mailbox === 'inbox' ? 'archive-' : 'unarchive-'}${email.id}`);
+  archive_unarchive_button.addEventListener('click', function () {
+    console.log('button was clicked');
+    archive_unarchive(email.id);
+  });
+}

@@ -1,0 +1,68 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<h2>Listings Details</h2>
+<div>
+    <h2>Details</h2>
+    <ul>
+        <li>Id | {{ listing.id }}</li>
+        <li>Title | {{ listing.title }}
+        <li>
+        <li>Des | {{ listing.description }} </li>
+        <li>URL | {{ listing.urllink }}</li>
+        <li>USER ID {{ user_id }}</li>
+        <li>Bid Status is {{ bid.status }}</li>
+        <li>Starting Bid is {{ bid.bid }}</li>
+    </ul>
+</div>
+<div>
+    {% if not watchlist_exists %}
+    <form action="{% url 'auctions:addwatchlist' listing.id %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="user_id" value="{{ user_id }}">
+        <button type="submit">Add to watch list</button>
+    </form>
+    {% else %}
+    <p>Remove from watch list</p>
+    <form action="{% url 'auctions:removewatchlist' listing.id %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="user_id" value="{{ user_id }}">
+        <button type="submit">Remove From Watchlist</button>
+    </form>
+    {% endif %}
+</div>
+<div>
+    {% if bid.status %}
+    <br>
+    <h2>Place Bid</h2>
+    <div>
+        <form action="{% url 'auctions:placebid' listing.id %}" method="post">
+            {% csrf_token %}
+            <lable for="bid">Place Bid</lable>
+            <input type="hidden" name="user_id" value="{{ user_id }}">
+            <input type="number" id="bid" name="bid">
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+    {% else %}
+    <br>
+    <h2>Can't place bid. Auction Closed</h2>
+    {% endif %}
+    <div>
+        {% if iscreator %}
+        <h2>Is creator. Close Auction</h2>
+        <div>
+            <form action="{% url 'auctions:closeauction' listing.id %}" method="POST">
+                {% csrf_token %}
+                <label>Close the auction</label>
+                <input type="submit" value="Close">
+            </form>
+        </div>
+
+        {% else %}
+        <h2>Is not Creator {{ listing.createdby.id }}</h2>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}
